@@ -1,0 +1,83 @@
+<#
+ .SYNOPSIS
+  This PowerShell script is to fetch computer information.
+
+ .DESCRIPTION
+  Demo to Get OS Name and Serial Number.
+
+ .PARAMETER ComputerName
+  ComputerName may be your local host or remote server name or IP address.
+
+ .EXAMPLE
+  PS C:\> Get-PCinformation -ComputerName '0.0.0.0'
+        Computer Name with Serial Number
+
+ .EXAMPLE
+  PS C:\> Get-PCInformation -ComputerName 'Localhost'
+        Localhost or remote computer name
+
+    .EXAMPLE
+        PS C:\>Get-PCInformation -ComputerName 'Server1'
+        Server Name with no FQDN [Fully Qualified Domain Name]
+
+    .EXAMPLE
+        PS C:\>Get-PCInformation -Computer 'Server.Domain.COM'
+        Server Name with FQDN [Fully Qualified Domain Name]
+
+ .INPUTS
+  System.String
+
+ .OUTPUTS
+  System.String
+
+ .NOTES
+  This is a Demo Script.
+
+ .LINK
+  about_functions_advanced
+
+ .LINK
+  about_comment_based_help
+
+#>
+
+#Try Catch
+
+try {
+#Trying to query running services
+Get-WmiObject -Class Win32_Service -ComputerName 'PingDown' -ErrorAction Stop |
+    ?{$_.State -eq 'Running'} 
+} catch {
+$_.Exception.GetType().FullName
+$_.Exception.Message | Out-File -FilePath C:\Temp\Logs.txt -Append
+}
+
+#Variables
+
+#Gets PowerShell Version
+$PSVersionTable
+
+#To Get Error Action Preference
+$ErrorActionPreference
+
+#To Get Warning Preference
+$WarningPreference
+
+#Function Doc
+
+
+Function Clear-UserTemp{
+<#
+ .SYNOPSIS
+  To Clear User Temporary Files
+
+ .DESCRIPTION
+  This command will remove User Temporary Files.
+ 
+ .EXAMPLE
+  Clear-UserTemp
+
+
+#>
+Remove-Item -Path $ENV:TEMP -Recurse -Confirm:$false
+}
