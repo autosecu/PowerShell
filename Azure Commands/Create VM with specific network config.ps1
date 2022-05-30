@@ -15,7 +15,7 @@ $creds = Get-Credential
 
 
 #New Public IP address
-$pip = New-AzPublicIpAddress -Name "RBLPublicIp" -ResourceGroupName $myResourceGroup -Location $location -AllocationMethod Dynamic
+$pip = New-AzPublicIpAddress -Name "RBLPublicIp2" -ResourceGroupName $myResourceGroup -Location $location -AllocationMethod Dynamic
 
 #New Network Security rule
 $rule1 = New-AzNetworkSecurityRuleConfig -Name rdp-rule -Description "Allow RDP" -Access Allow -Protocol Tcp -Direction Inbound -Priority 100 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 3389
@@ -24,7 +24,7 @@ $rule1 = New-AzNetworkSecurityRuleConfig -Name rdp-rule -Description "Allow RDP"
 $nsg1 = New-AzNetworkSecurityGroup -Name "nsg1" -ResourceGroupName $myResourceGroup  -Location  "eastus" -SecurityRules $rule1
 
 #New Azure Network Interface
-$rblnic = New-AzNetworkInterface -Name "NetworkInterface1" -ResourceGroupName $myResourceGroup -Location $location -SubnetId $vnet.Subnets[0].Id -PublicIpAddressID $pip.Id -NetworkSecurityGroupId $nsg1.Id
+$rblnic = New-AzNetworkInterface -Name "NetworkInterface2" -ResourceGroupName $myResourceGroup -Location $location -SubnetId $vnet.Subnets[0].Id -PublicIpAddressID $pip.Id -NetworkSecurityGroupId $nsg1.Id
 
 #Create a deployment configuration for a VM with the new network info we made
 $rblvmconfig = New-AzVMConfig -VMName RBL1 -VMSize Standard_D2s_v3 | Set-AzVMOperatingSystem -Windows -ComputerName "RBL1" -Credential $creds | Set-AzVMSourceImage -PublisherName MicrosoftWindowsServer -Offer WindowsServer -Skus 2016-Datacenter -Version latest | Add-AzVMNetworkInterface -Id $rblnic.Id

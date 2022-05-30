@@ -1,0 +1,4 @@
+$virtualNetwork = Get-AzVirtualNetwork -Name RBLVNet
+$virtualNetwork.Subnet
+#can add [#] to pull info from subnet (like ID) but listing isnt in chrono order
+$subnet = Get-AZVirtualNetworkSubnetConfig -Name mySubnet1 -VirtualNetwork $virtualNetwork
